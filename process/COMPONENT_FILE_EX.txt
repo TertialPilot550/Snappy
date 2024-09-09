@@ -1,0 +1,14 @@
+abstract component {
+name: component_name
+
+x: component_x
+y: component_y
+
+width: component_width
+height: component_height
+depth: component_depth
+
+drawable: true
+}
+(Conditional) image_path: "./res/images/name"
+(Conditional) visible: true

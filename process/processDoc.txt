@@ -1,0 +1,215 @@
+AMINADOR process doc
+
+///////////////////////////////////////////////////////////////////////
+
+	Current TODO:
+	
+	- Finish Window
+	- Implement Characters
+	- Revise
+
+	In progress classes are kept in the main package to keep them at the
+	center of my attention. That way, I also have an easy way to keep track of my progress.
+	
+	The following components are not yet finished:
+		AnimatedEdgeComponent
+		EdgeComponent
+		NodeComponent
+
+	Eventually,
+	Window -> ui
+	FileUtil -> util
+
+///////////////////////////////////////////////////////////////////////
+
+
+[FUNCTIONALIY]
+
+- Sprites 
+	> Individual image Components
+	> Static
+	
+- Characters
+	> Not automatic animation
+	> Composed of sprites linked by pivot points 
+	> Can rotate sprites around pivot points
+		
+ - Backgrounds
+ 	> static image
+ 	
+ - Animated Component
+ 	> contains variations on a sprite, and changes between them based on animator action. Usually the save feature
+ 	
+
+ 
+ 
+ Operations: ()
+  - Screen capture
+  - Drag and drop sprite manipulation (+ rotation/mirroring ?)
+  - Define sprites
+  - Define backgrounds
+  - Define characters
+  - Define animated
+  - Store sprites/backgrounds/characters/animated in the scene directory in files
+  - Add/remove characters
+  - Add/remove sprites
+  - Add/remove animated
+  - Add/remove backgrounds
+  - Cycle backgrounds
+  - Cycle animated objects {based on condition ~ not sure about how to best implement this}
+ 	
+ 	
+ 	
+ /////////////////
+ /     Window    /         [Will contain all the other control UI elements]
+ /////////////////
+ 
+ 		|
+ 		v
+ 		
+ ///////////////////////
+ /   Animation Frame   / 	[Handles mouse input data]
+ ///////////////////////
+ 			
+ 			|
+ 			|-----------------------------------\
+ 			v									v
+ 			
+ /////////////////						/////////////////
+ /     Scene     /  					/    Renderer   /
+ /////////////////  					/////////////////
+ 											
+ 	- store info							- only takes in a scene, either saves or prints to screen the result
+ 	- load and store from files				- renders based off of the data in scene completely. 
+ 	
+ 	
+	
+ /////////////////
+ /     Scene     /         
+ /////////////////	
+ 	- Contains a list of all components.
+ 	- Can keep track of a list of backgrounds, 
+
+	
+ [SIMPLE COMPONENTS]
+ 
+ ///////////////////////////
+ /    AbstractComponent    /	- abstract class. location, size, rotation, or whatever is needed. Functions as a basic object that I can do any interactions on
+ ///////////////////////////
+ +++++
+
+ /////////////////////
+ /  Drawn Component  / - allows a drawn sprite using java geometry     
+ /////////////////////
+
+ /////////////////
+ /     Sprite    /	- extends abstract component represents an indivisible unit. contains an image    
+ /////////////////
+ +++++
+ 		
+ /////////////////
+ /   Background  /  - extends sprite. always matches screen size. potentially add zoom?
+ /////////////////
+ 
+ [COMPLEX COMPONENTS]
+ 
+ /////////////////
+ /   structure   /  - abstract class, extends abstractComponent. Provides a centered identity for the complex components. contains a map of joints and limbs
+ /////////////////
+ 
+ 
+ 
+ 
+ /////////////////
+ /    Animated   /     
+ /////////////////
+ 	- switches between varying states based on either user input, or link to save function to auto advance the animation
+
+
+
+
+ /////////////////
+ /     Limb	     /	- extends sprite
+ /////////////////
+ 
+ 	- contains an image, and functions as a solid structure for the character
+ 	- size and location determines sprite size and location
+
+ /////////////////
+ /     Joint	 /	- extends abstract component
+ /////////////////
+ 
+ 	- boolean locked to lock in place
+ 	- contains a list of connected limbs
+
+ /////////////////
+ /   Character   /         
+ /////////////////
+ 
+ 	- contains a list of pivots that are each associated with a sprite
+ 	- can be used to lock an image of a certain size a certain distance away from 
+ 
+ 
+ 
+ ///////////////////////////////////////////////////////////////////////////////////
+ Scene example:
+ 
+ [name]
+ [path-to-backgrounds]
+ [path-to-components]
+ [current-background]
+ 
+ 
+ 
+ 
+ ///////////////////////////////////////////////////////////////////////////////////
+ 
+ 	The ComplexComponent/VectorComponent is a directed graph. It is rooted on a Node root with null data. 
+ 	The root node should be displayed visually in some way if the object is selected, and not saved to an image.
+ 	
+ 	New nodes are added by using the spawnChild() method of a NodeComponent, and takes in arguments for an 
+ 	AbstractComponent to be the data of the node, and two doubles to represent direction and magnitude. This 
+ 	method automatically updates the child's position with a position determined by the parent's position plus 
+ 	the change described by the edge vector. Since the null data root node is created when the component is created, 
+ 	spawnChild() is always available.
+ 		!! Components with a depth of more than 1 have not been tested yet, but should theoretically have no issues
+ 		
+ 	
+ 	// In ComplexComponent	
+ 	public void moveNode(NodeComponent node, int newX, int newY);
+ 	public void orientNode(NodeComponent node, double newDirection);
+ 	public void slideNode(NodeComponent node, double newMagnitude);
+ 		
+ 	nodes are manipulated in one of 3 ways: 
+ 		free movement: 
+ 			move the child to a new (x, y) coordinate, and update the edge's direction and magnitude to 
+ 			match the new position
+ 			
+ 		locked direction, magnitude only (closer vs farther from parent):
+ 			change the child's magnitude, without modifying it's direction
+ 			
+ 		locked magnitude, direction only (direction from parent):
+ 			change the child's direction, without modifying it's magnitude.
+ 				- potentially implement a feature where the image's rotation componsates for the change in direction,
+ 				  keeping the same orientation relative to the parent. i.e. arm staying in socket.
+ 				  
+ 	For now, don't worry about constructing them with the ui. that will be tackled later, potentially in a pop up window. 
+ 	However, all aspects of the character should still be modifiable from the main software screen
+ 		
+ 			
+ 		
+ 	
+ 	
+ /////////////////////////
+ 
+ Simple Node and Edge Model:
+ 
+ Nodes have minimal implementation and edges too, the other stuff is handled in a vector graph class maybe or something like that idfk
+ 
+ 
+ 
+ 
+	
+	
+	
+	
